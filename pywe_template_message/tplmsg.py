@@ -229,7 +229,12 @@ class TemplateMessage(BaseToken):
             },
         )
 
-    def send_template_message(self, user_id, template_id, data, url=None, mini_program=None, appid=None, secret=None, token=None, storage=None):
+    def send_template_message(self, user_id, template_id, data, url=None, miniprogram=None, mini_program=None, miniappid=None, minipagepath=None, appid=None, secret=None, token=None, storage=None):
+        if not miniprogram and not mini_program and miniappid and minipagepath:
+            miniprogram = {
+                'appid': miniappid,
+                'pagepath': minipagepath,
+            }
         return self.post(
             self.WECHAT_TEMPLATE_MESSAGE_SEND,
             params={
@@ -239,7 +244,7 @@ class TemplateMessage(BaseToken):
                 'touser': user_id,
                 'template_id': template_id,
                 'url': url,
-                'miniprogram': mini_program,
+                'miniprogram': miniprogram or mini_program,
                 'data': data,
             },
         )
